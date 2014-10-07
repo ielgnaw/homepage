@@ -1,0 +1,106 @@
+<%- partial('_partial/head') %>
+
+<body>
+    <div id="content">
+        <%- partial('_partial/aside') %>
+        <%
+            if (page.archive) {
+        %>
+            <%- partial('_partial/archives') %>
+        <%
+            } else {
+        %>
+            <%
+                if (page.layout !== 'false' && page.posts) {
+            %>
+                <% page.posts.each(function (item) { %>
+                    <article class="post">
+                        <h2 class="ui-tit-01">
+                            <a href="<%- config.root %><%- item.path %>" title="<%= item.title %>">
+                                <%= item.title %><%- partial('_partial/post/tag', {item: item, type: "archive"}) %>
+                            </a>
+                        </h2>
+                        <span class="ui-date db">
+                            <%- partial('_partial/post/date', {item: item, type: 'post'}) %>
+                        </span>
+                        <div class="ui-copy">
+                            <% if (item.excerpt) { %>
+                                <%- item.excerpt %>
+                                <a href="<%- config.root %><%- item.path %>" class="more-link">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <%= theme.excerpt_link %>
+                                </a>
+                            <% } else { %>
+                                <%- item.content %>
+                            <% } %>
+                        </div>
+                    </article>
+                <% }); %>
+                <nav id="pagenavi">
+                    <% if(page.prev){ %>
+                        <a href="<%- config.root %><%- page.prev_link %>" class="prev">
+                          <%= __('prev') %>
+                        </a>
+                    <% } %>
+                    <% if(page.next){ %>
+                        <a href="<%- config.root %><%- page.next_link %>" class="next">
+                          <%= __('next') %>
+                        </a>
+                    <% } %>
+                </nav>
+
+            <% } else { %>
+                <article class="post">
+                    <h2 class="ui-tit-01">
+                        <a href="<%- config.root %><%- page.path %>" title="<%= page.title %>">
+                            <%= page.title %>
+                        </a>
+                    </h2>
+                    <span class="ui-date db">
+                        <%- partial('_partial/post/date', {item: page, type: 'post'}) %>
+                    </span>
+                    <div class="ui-copy">
+                        <%- page.content %>
+                    </div>
+                </article>
+                <% if (page.comments){ %>
+                    <section id="comment">
+                        <!-- Duoshuo Comment BEGIN -->
+                        <div class="ds-thread"></div>
+                        <script type="text/javascript">
+                            var duoshuoQuery = {short_name:"ielgnaw"};
+                            (function() {
+                                var ds = document.createElement('script');
+                                ds.type = 'text/javascript';ds.async = true;
+                                ds.src = 'http://static.duoshuo.com/embed.js';
+                                ds.charset = 'UTF-8';
+                                (document.getElementsByTagName('head')[0]
+                                    || document.getElementsByTagName('body')[0]).appendChild(ds);
+                            })();
+                        </script>
+                        <!-- Duoshuo Comment END -->
+                    </section>
+                <% } %>
+            <% }; %>
+        <%
+            }
+        %>
+        <footer id="footer" class="innesadr">
+            <%- partial('_partial/footer') %>
+        </footer>
+        <%- partial('_partial/after_footer') %>
+    </div>
+
+    <!-- <% for (var i in page) {%> -->
+    <!-- <%- i %> : <% page[i] %> <br> -->
+    <!-- <% } %> -->
+
+    <!-- Baidu Button BEGIN -->
+    <script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=5&amp;mini=1&amp;pos=right&amp;uid=2626170" ></script>
+    <script type="text/javascript" id="bdshell_js"></script>
+    <script type="text/javascript">
+        document.getElementById('bdshell_js').src = 'http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=' + Math.ceil(new Date()/3600000);
+    </script>
+    <!-- Baidu Button END -->
+</body>
+</html>

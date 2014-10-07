@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 9]> <html class="no-js ie"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="baidu-site-verification" content="9OXX8YhPH8" />
+    <meta name="google-site-verification" content="u4OsQ4qyvwAb1T378bL6QTNkPnpzLe71TFVYvu_pR-4" />
+    <%
+        var title = [];
+        if (page.current > 1) {
+            title.push(__('page', page.current));
+        }
+        if (page.title) {
+            title.push(page.title);
+        }
+        if (page.category) {
+            title.push(page.category);
+        }
+        if (page.tag) {
+            title.push(page.tag);
+        }
+        if (page.archive) {
+            if (page.year) {
+                title.push(__('archive_b', page.year + (page.month ? '/' + page.month : '')));
+            }
+            else {
+                title.push(__('archive_a'));
+            }
+        }
+        title.push(config.title);
+    %>
+    <title><%= title.join(' | ') %></title>
+    <% if (config.author) { %>
+    <meta name="author" content="<%= config.author %>">
+    <% } %>
+
+    <% if (page.description) { %>
+    <meta name="description" content="<%= page.description %>">
+    <% } else if (page.excerpt) { %>
+    <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '').replace(/[\n,\r]/g,'') %>">
+    <% } else if (page.content) { %>
+    <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150).replace(/[\n,\r]/g,'') %>">
+    <% } else if (config.description) { %>
+    <meta name="description" content="<%= config.description %>">
+    <% } %>
+
+    <% if (page.keywords) { %>
+    <meta name="keywords" content="<%= page.keywords %>">
+    <% } else if (page.tags) { %>
+    <%
+        var thistags = [];
+        page.tags.each(function (k) {
+            thistags.push(k.name);
+        });
+    %>
+    <meta name="keywords" content="<%= thistags %>">
+    <% } %>
+
+    <% if (page.title) { %>
+    <meta property="og:title" content="<%= page.title %>"/>
+    <% } %>
+    <meta property="og:site_name" content="<%= config.title %>"/>
+
+    <% if(page.cover) { %>
+    <meta property="og:image" content="<%= page.cover %>" />
+    <% } else { %>
+    <meta property="og:image" content="<%= config.cover %>"/>
+    <% } %>
+
+    <link href="<%- config.root %>favicon.ico" rel="icon" type="image/x-ico">
+
+    <link rel="alternate" href="<% if (theme.rss){ %><%- theme.rss %><% } else { %><%- config.root %>atom.xml<% } %>" title="<%= config.title %>" type="application/atom+xml">
+
+    <!-- <link rel="stylesheet" href="<%- config.root %>css/style.css" media="screen" type="text/css"> -->
+    <!-- <link rel="stylesheet" href="<%- config.root %>css/print.css" media="print" type="text/css"> -->
+    <!-- <link rel="stylesheet" href="<%- config.root %>js/google-code-prettify/prettify.css" type="text/css"> -->
+    <!-- <link rel="stylesheet" href="<%- config.root %>css/lesstest.css" media="screen" type="text/css"> -->
+
+    <link rel="stylesheet" href="<%- config.root %>css/font-awesome.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="<%- config.root %>css/app.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="<%- config.root %>css/main.css" media="screen" type="text/css">
+    <link rel="stylesheet" href="<%- config.root %>css/prettify.css" media="screen" type="text/css">
+    <script src="<%- config.root %>js/jquery.1.9.min.js"></script>
+</head>

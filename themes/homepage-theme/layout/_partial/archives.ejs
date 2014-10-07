@@ -1,0 +1,62 @@
+<%
+    var title = '';
+    if (page.category) {
+        title = page.category;
+    }
+    if (page.tag) {
+        title = page.tag;
+    }
+    if (page.archive) {
+        title = __('archive_a');
+    }
+%>
+<%
+    var year = '';
+    page.posts.each(function (item, index) {
+%>
+    <%
+        var post_year = moment(item.date).year()
+    %>
+
+    <%
+        if (post_year != year) {
+            if (year) {
+    %>
+                </section>
+    <%
+            }
+            year = post_year;
+    %>
+        <section class="archives<% if (index == 0) { %> first<% } %>"><h1 class="year"><%= year %></h1>
+    <% } %>
+        <article itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+            <div class="meta">
+                <%- partial('post/date', {item: item, type: "archive"}) %>
+                <br>
+                <%- partial('post/tag', {item: item, type: "archive"}) %>
+            </div>
+            <h1 class="title" itemprop="name">
+                <a href="<%- config.root %><%- item.path %>"><%= item.title %></a>
+            </h1>
+        </article>
+    <%
+        if (page.posts.length == index + 1) {
+    %>
+            </section>
+    <%
+        }
+    %>
+<% }); %>
+
+<nav id="pagenavi">
+    <% if(page.prev){ %>
+        <a href="<%- config.root %><%- page.prev_link %>" class="prev">
+          <%= __('prev') %>
+        </a>
+    <% } %>
+    <% if(page.next){ %>
+        <a href="<%- config.root %><%- page.next_link %>" class="next">
+          <%= __('next') %>
+        </a>
+    <% } %>
+</nav>
